@@ -1,0 +1,4 @@
+This file will hold my useful notes on scripting in maple.
+# This is kinda like my own mini confluence!
+
+- 
