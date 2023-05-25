@@ -1,4 +1,4 @@
-These are some common git commands that I know how to use.
+These are some common git commands that I know how to use.(test)
 
 - git config --global user.name "your name"
 
