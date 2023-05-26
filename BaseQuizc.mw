@@ -4,7 +4,7 @@
 <Label-Scheme value="2" prefix=""/>
 <View-Properties presentation="false" autoexpanding_sections="true" UserProfileName="Maple Default Profile" NumericFormat-ApplyInteger="true" NumericFormat-ApplyRational="true" NumericFormat-ApplyExponent="false" editable="true">
 </View-Properties>
-<MapleNet-Properties prettyprint="3" warnlevel="3" compactdisplay="false" preplot="" helpbrowser="standard" displayprecision="-1" echo="1" scientificx="true" unitattributes="&quot;fontweight&quot; = &quot;bold&quot;" imaginaryunit="I" longdelim="true" elisiontermsthreshold="10000" elisiondigitsafter="100" elisiondigitsbefore="100" plotdevice="inline" errorbreak="1" plotoptions="" plotdriver="opengl" quiet="false" elisiontermsbefore="100" elisiontermsafter="100" historytimestamp="false" screenwidth="79" indentamount="4" plotoutput="terminal" screenpixelheight="1440" rtablesize="100" useclientjvm="true" format="worksheet" labelwidth="20" postplot="" typesetting="extended" ansi="false" ansicolor="[]" elisiondigitsthreshold="10000" showassumed="1" ansilprint="false" trailingsemicolon="true" errorcursor="false" labelling="true" screenheight="25" prompt="&gt; " verboseproc="1" latexwidth="8.0" ShowLabels="true"/>
+<MapleNet-Properties prettyprint="3" warnlevel="3" compactdisplay="false" preplot="" helpbrowser="standard" displayprecision="-1" echo="1" scientificx="true" unitattributes="&quot;fontweight&quot; = &quot;bold&quot;" imaginaryunit="I" longdelim="true" elisiontermsthreshold="10000" elisiondigitsafter="100" elisiondigitsbefore="100" plotdevice="inline" errorbreak="1" plotoptions="" plotdriver="opengl" quiet="false" elisiontermsbefore="100" elisiontermsafter="100" historytimestamp="false" screenwidth="79" indentamount="4" plotoutput="terminal" screenpixelheight="1440" rtablesize="[10, 10]" useclientjvm="true" format="worksheet" labelwidth="20" postplot="" typesetting="extended" ansi="false" ansicolor="[]" elisiondigitsthreshold="10000" showassumed="1" ansilprint="false" trailingsemicolon="true" errorcursor="false" labelling="true" screenheight="25" prompt="&gt; " verboseproc="1" latexwidth="8.0" ShowLabels="true"/>
 <Styles>
 <Font name="Heading 1" background="[255,255,255]" bold="true" executable="false" family="Times New Roman" foreground="[0,0,0]" italic="false" opaque="false" readonly="false" size="18" subscript="false" superscript="false" underline="false" placeholder="false"/>
 <Font name="Warning" background="[255,255,255]" bold="false" executable="false" family="Courier New" foreground="[0,0,255]" italic="false" opaque="false" readonly="true" size="12" subscript="false" superscript="false" underline="false" placeholder="false"/>
@@ -89,29 +89,73 @@
 </Task-table>
 <Task/>
 <Group labelreference="L1" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
+<Input><Text-field style="Text" layout="Normal">Solution Procedures</Text-field>
 </Input>
-</Group><CodeEditor-ExecGroup view="presentation" hide-input="false" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Initalizing stuff
+</Group><CodeEditor-ExecGroup view="presentation" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">GetSolQ := proc()	#sub procedure that will be used in main procedure
+	return[Text(&quot;returning stuff&quot;),	#The text that is going to returned is here
+		  Text(&quot;returing another line of stuff&quot;)
+		  ];
+end proc:
+
+ShowSolQ := proc(canvas):	#Main procedure that will show the solution
+	local sc := Script();
+	SetOption(sc, &quot;DELAY&quot;, 20);	#setting delay for string var
+	SetActive(sc,&quot;solGroup&quot;);	#Focusing on the group
+	ClearGroup(sc);	#clearing activated group
+	SetActive(sc,&quot;sol&quot;);	#Focusing on the solution itself
+	SetText(sc, &quot;Solution:&quot;);	#Setting the first line of sc to Solution:
+	
+	local solution := GetSolQ();	#Assigning the solution in getSol to the solution variable
+
+	for local i from 1 to numelems(solution) do	#Cycles through each line of solution
+
+		if type(solution[i], string) or type(solution[i], record) then	#If a string then...
+			SetText(sc,solution[i],'where' = &quot;below&quot;);	#Add the text to sc - below
+		else                                                            
+			SetMath(sc,solution[i],'where' = &quot;below&quot;);	#If its math add it to sc - below
+			
+			SetOption(sc, &quot;PLOT&quot;, false);		#Toggle Plot Window
+			SetOption(sc, &quot;RESULT&quot;, false);	#Toggle result annotation
+		end if;
+	end do;	#ending the loop
+
+	return ToString(sc);	#To string allows to return var as string
+	
+end proc:
+</EC-CodeEditor>
+<Input><Text-field prompt="&gt; " style="Maple Input" spaceabove="0" linebreak="space" rightmargin="0" linespacing="0.0" initial="0" firstindent="0" leftmargin="0" bulletsuffix="" alignment="left" bullet="none" spacebelow="0" pagebreak-before="false"></Text-field>
+</Input></CodeEditor-ExecGroup>
+<Group labelreference="L41" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field style="Text" layout="Normal">Hint Procedures</Text-field>
+</Input>
+</Group><CodeEditor-ExecGroup view="presentation" labelreference="L43" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion2" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true"></EC-CodeEditor></CodeEditor-ExecGroup>
+<Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field style="Text" layout="Normal">Canvas Stuff</Text-field>
+</Input>
+</Group><CodeEditor-ExecGroup view="presentation" labelreference="L6" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion1" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Initalizing Canvas stuff
 restart():
 with(DocumentTools:-Canvas):
-#This will make diffrent groups that contain the infromation below
-#If things are not put in groups they will make their own if they have math, and make a text cell if they have text.
-cv:=NewCanvas([&quot;This is the Title&quot;,Group([&quot;This is a diffrent group&quot;,&quot;This should be the second cell of the group&quot;]),
-			Text(&quot;This is math %1 and text&quot;,x^2),ScriptButton(&quot;Click me!&quot;, clickProc, include=[otherProc], size=[80,30])
-			]):
-# Share canvas makes the link where I can look at the Canvas
-ShareCanvas(cv);
 
-clickProc := proc(canvas)
-	local s := Script():
-	SetText(s, &quot;Great job!  You clicked the button!&quot;, 'where'=&quot;newgroup&quot;):
-	return ToString(s):
-end proc:
-</EC-CodeEditor></CodeEditor-ExecGroup>
-<TaskRegion Mutable="false" Label="L3" ContextMenu="">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L51" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=GMIOCSLPCIHLOGIFPUPTDNPMPINKGNBGGSKINHMNLONONPEQLMOUCREJFPHGEUBLESEMGJOJINOKPTBNBGGJAHKLGKHQCOCNPPFQ" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=GMIOCSLPCIHLOGIFPUPTDNPMPINKGNBGGSKINHMNLONONPEQLMOUCREJFPHGEUBLESEMGJOJINOKPTBNBGGJAHKLGKHQCOCNPPFQ</Font></Hyperlink></Text-field>
+cv:=NewCanvas([Text(_BOLD(&quot;Beginner Coulomb's Law Question&quot;)),	#Making new canvas with title
+
+			Group([Text(&quot;Text will be revealed here&quot;,custom=&quot;sol&quot;)],custom=&quot;solGroup&quot;),	#Solution will appear here
+			
+			ScriptButton(&quot;Reveal&quot;,	#Button name 
+			ShowSolQ,	#Main procedure
+			include=[GetSolQ],	#Extra procedure
+			size=[80,30],	#Defining size
+			position=[500,150])	#Defining position
+			]):
+	
+ShareCanvas(cv);	#Sharing learn canvas link</EC-CodeEditor></CodeEditor-ExecGroup>
+<TaskRegion Mutable="false" Label="L6" ContextMenu="">
+<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L46" drawlabel="true">
+<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=FFMRITLQOFOLITKFLNERHKOMEQISCRBRJRIHJKHMKSJJGHHNMSEUKLOLISDOKMPTPOJRFJPTMIHRHMDNAMJUKRIPNINIDINPHHAG" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=FFMRITLQOFOLITKFLNERHKOMEQISCRBRJRIHJKHMKSJJGHHNMSEUKLOLISDOKMPTPOJRFJPTMIHRHMDNAMJUKRIPNINIDINPHHAG</Font></Hyperlink></Text-field>
 </Input>
 </Group>
 </TaskRegion>
+<Group labelreference="L7" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
+</Input>
+</Group>
 </Worksheet>
