@@ -1,0 +1,24 @@
+###Order is important, canvas must go at end
+
+#Needed for starting code
+--> restart():                   #resets document
+-->with(DocumentTools:-Canvas):  #imports canvas stuff
+
+#Canvas commands
+--> cv:=NewCanvas([]):           #Acctualy makes the canvas
+--> ShareCanvas(cv);             #Prints a maple learn link for the canvas
+--> Script()                     #Creates________ 
+
+#Text Commands
+--> "Can put text boxes in quotations",         #need comma unless last in canvas
+--> Group(["cell 1", "Cell 2"]),                #makes a group that you can put text in
+--> Text("I can put math %1 and text", x^2),    #lets you use text and math
+
+#Buttons
+--> ScriptButton("NameOfButton", procedureForButton, size&otherStuff),  #makes a button that is controled by a procedure
+
+#Procedure stuff
+--> SetText(stringVar, "text", diffrentOptions)    #Sets the contents of a canvas element
+--> SetActive(stringVar, ID)                       #Specifies what component is active, note ID is the location "0:0"
+-->
+
