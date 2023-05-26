@@ -84,6 +84,21 @@
 <Highlighter-style name="Highlighter 2" pen-color="[255,204,0]" pen-height="14.0" pen-width="14.0" pen-opacity="0.8"/>
 </Styles>
 <Startup-Code startupcode=""/>
+<Metadata-table>
+	<Metadata-category name="&lt;default&gt;"/>
+	<Metadata-tag id="0" category="&lt;default&gt;" name="Document Properties">
+		<Metadata-attribute name="X-CloudURL" value="https://maple.cloud"/>
+		<Metadata-attribute name="X-CloudId" value="6357090702196736"/>
+		<Metadata-attribute name="Keywords" value="&lt;default&gt;"/>
+		<Metadata-attribute name="Item List" value="true"/>
+		<Metadata-attribute name="X-CloudGroup" value="public"/>
+		<Metadata-attribute name="Title" value="&lt;default&gt;"/>
+		<Metadata-attribute name="Author" value="&lt;default&gt;"/>
+		<Metadata-attribute name="X-CloudVersion" value="1"/>
+		<Metadata-attribute name="X-CloudXId" value="1905475"/>
+		<Metadata-attribute name="Subject" value="&lt;default&gt;"/>
+	</Metadata-tag>
+</Metadata-table>
 <Task-table>
 	<Task-category name="&lt;default&gt;"/>
 </Task-table>
@@ -92,8 +107,14 @@
 <Input><Text-field style="Text" layout="Normal">Solution Procedures</Text-field>
 </Input>
 </Group><CodeEditor-ExecGroup view="presentation" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">GetSolQ := proc()	#sub procedure that will be used in main procedure
-	return[Text(&quot;returning stuff&quot;),	#The text that is going to returned is here
-		  Text(&quot;returing another line of stuff&quot;)
+	return[Text(&quot;Coulomb's Law is %1 = %2.&quot;,F[e],((k)*((q[1])*(q[2])))/((r)^(2))),
+		   Text(&quot;To find the force that %1 exerts on %2, %3 = %4 can be used.&quot;,q[1],q[2],F[q1q2],evalf[3](((8.99)*((10)^(9)))*((q[1])*(q[2])))/((r)^(2))), 		
+		   	&quot;Before using the equation above, the charges must be converted to Coulombs, and the distance (2cm) must be converted to meters.&quot;,
+		   Text(&quot;The converted values are %1 = +%2C, %3 = -%4C, and %5 = %6m.&quot;,q[1],evalf[2]((3)*((10)^(-9))),q[2],evalf[2]((9)*((10)^(-9))),r,0.02),
+		   &quot;Plugging these values into the equation, it can be found that&quot;,
+		   Text(&quot;%1 = %2&quot;,F[q1q2],(((8.99)%*((10)%^(9)))%*(((3)%*((10)%^(-9)))%*(-9)%*((10)%^(-9))))%/((0.02)%^(2))),
+		   Text(&quot;=-%1N&quot;,(6.068)%*((10)%^(-4))),
+		   Text(&quot;The force found above is the magnitude of the force that %1 exerts on %2. This is the same as %3 on %4, because if a particle applies a force on another particle, they must apply equal and opposite forces to each other (see %5).&quot;,q[1],q[2],q[2],q[1],Link(&quot;https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion&quot;,&quot;Newton's laws of motion&quot;))
 		  ];
 end proc:
 
@@ -128,7 +149,36 @@ end proc:
 <Group labelreference="L41" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
 <Input><Text-field style="Text" layout="Normal">Hint Procedures</Text-field>
 </Input>
-</Group><CodeEditor-ExecGroup view="presentation" labelreference="L43" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion2" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true"></EC-CodeEditor></CodeEditor-ExecGroup>
+</Group><CodeEditor-ExecGroup view="presentation" labelreference="L43" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion2" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">GetSolH := proc()	#sub procedure that will be used in main procedure
+	return[ Text(&quot;To find the force that %1 exerts on %2, %3 = %4 can be used.&quot;,q[1],q[2],F[q1q2],evalf[3](((8.99)*((10)^(9)))*((q[1])*(q[2])))/((r)^(2)))
+		  ];
+end proc:
+
+ShowSolH := proc(canvas):	#Main procedure that will show the hint
+	local sc := Script();
+	SetOption(sc, &quot;DELAY&quot;, 20);	#setting delay for string var
+	SetActive(sc,&quot;solGroup2&quot;);	#Focusing on the group
+	ClearGroup(sc);	#clearing activated group
+	SetActive(sc,&quot;sol2&quot;);	#Focusing on the hint itself
+	SetText(sc, &quot;Hint:&quot;);	#Setting the first line of sc to Hint:
+	
+	local solution := GetSolH();	#Assigning the hint in getSolH to the solution variable
+
+	for local i from 1 to numelems(solution) do	#Cycles through each line of solution
+
+		if type(solution[i], string) or type(solution[i], record) then	#If a string then...
+			SetText(sc,solution[i],'where' = &quot;below&quot;);	#Add the text to sc - below
+		else                                                            
+			SetMath(sc,solution[i],'where' = &quot;below&quot;);	#If its math add it to sc - below
+			
+			SetOption(sc, &quot;PLOT&quot;, false);		#Toggle Plot Window
+			SetOption(sc, &quot;RESULT&quot;, false);	#Toggle result annotation
+		end if;
+	end do;	#ending the loop
+
+	return ToString(sc);	#To string allows to return var as string
+	
+end proc:</EC-CodeEditor></CodeEditor-ExecGroup>
 <Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
 <Input><Text-field style="Text" layout="Normal">Canvas Stuff</Text-field>
 </Input>
@@ -137,20 +187,29 @@ restart():
 with(DocumentTools:-Canvas):
 
 cv:=NewCanvas([Text(_BOLD(&quot;Beginner Coulomb's Law Question&quot;)),	#Making new canvas with title
+			Text(&quot;Point charges %1 and %2 are +3 nano Coulombs (nC) and -9 nC, respectively. Both point charges are located on the x-axis. %3 is 1cm from the origin, while %4 is 3cm from the origin. What is the magnitude of the force %5 exerts on %6? Is this the same as %7 on %8?&quot;,q[1],q[2],q[1],q[2],q[1],q[2],q[2],q[1]),
 
-			Group([Text(&quot;Text will be revealed here&quot;,custom=&quot;sol&quot;)],custom=&quot;solGroup&quot;),	#Solution will appear here
+			Group([Text(&quot;The solution will appear here:&quot;,custom=&quot;sol&quot;)],custom=&quot;solGroup&quot;),	#Solution will appear here
+			Group([Text(&quot;The hint will appear here:&quot;,custom=&quot;sol2&quot;)],custom=&quot;solGroup2&quot;,position=[600,350]),	#Hint will appear here
 			
-			ScriptButton(&quot;Reveal&quot;,	#Button name 
+			ScriptButton(&quot;Show Solution&quot;,	#Button name 
 			ShowSolQ,	#Main procedure
 			include=[GetSolQ],	#Extra procedure
-			size=[80,30],	#Defining size
-			position=[500,150])	#Defining position
+			size=[120,30],	#Defining size
+			position=[650,200]),	#Defining position
+
+			ScriptButton(&quot;Show Hint&quot;,	#Button name 
+			ShowSolH,	#Main procedure
+			include=[GetSolH],	#Extra procedure
+			size=[120,30],	#Defining size
+			position=[650,250])	#Defining position
+			
 			]):
 	
 ShareCanvas(cv);	#Sharing learn canvas link</EC-CodeEditor></CodeEditor-ExecGroup>
 <TaskRegion Mutable="false" Label="L6" ContextMenu="">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L46" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=FFMRITLQOFOLITKFLNERHKOMEQISCRBRJRIHJKHMKSJJGHHNMSEUKLOLISDOKMPTPOJRFJPTMIHRHMDNAMJUKRIPNINIDINPHHAG" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=FFMRITLQOFOLITKFLNERHKOMEQISCRBRJRIHJKHMKSJJGHHNMSEUKLOLISDOKMPTPOJRFJPTMIHRHMDNAMJUKRIPNINIDINPHHAG</Font></Hyperlink></Text-field>
+<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L121" drawlabel="true">
+<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=ELPMKIGQAKHOEOILPUJHGSDTHLNTLFGMNTJTKTHRBJIOGGJMCUBMIFDHOQKTLLFOMJCHPRGFLQKKNTIRIKHSKHJTBGIGCFGOFNEF" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=ELPMKIGQAKHOEOILPUJHGSDTHLNTLFGMNTJTKTHRBJIOGGJMCUBMIFDHOQKTLLFOMJCHPRGFLQKKNTIRIKHSKHJTBGIGCFGOFNEF</Font></Hyperlink></Text-field>
 </Input>
 </Group>
 </TaskRegion>
