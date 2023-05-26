@@ -20,5 +20,5 @@
 #Procedure stuff
 --> SetText(stringVar, "text", diffrentOptions)    #Sets the contents of a canvas element
 --> SetActive(stringVar, ID)                       #Specifies what component is active, note ID is the location "0:0"
--->
+-->testing
 
