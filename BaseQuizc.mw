@@ -186,9 +186,9 @@ end proc:</EC-CodeEditor></CodeEditor-ExecGroup>
 restart():
 with(DocumentTools:-Canvas):
 
-cv:=NewCanvas([Text(_BOLD(&quot;Beginner Coulomb's Law Question&quot;)),	#Making new canvas with title
+cv:=NewCanvas([Text(_BOLD(&quot;Coulomb's Law: An Example Problem (Beginner)&quot;)),	#Making new canvas with title
 			Text(&quot;Point charges %1 and %2 are +3 nano Coulombs (nC) and -9 nC, respectively. Both point charges are located on the x-axis. %3 is 1cm from the origin, while %4 is 3cm from the origin. What is the magnitude of the force %5 exerts on %6? Is this the same as %7 on %8?&quot;,q[1],q[2],q[1],q[2],q[1],q[2],q[2],q[1]),
-
+			Text(&quot;Use this space for your rough work&quot;),
 			Group([Text(&quot;The solution will appear here:&quot;,custom=&quot;sol&quot;)],custom=&quot;solGroup&quot;),	#Solution will appear here
 			Group([Text(&quot;The hint will appear here:&quot;,custom=&quot;sol2&quot;)],custom=&quot;solGroup2&quot;,position=[600,350]),	#Hint will appear here
 			
@@ -208,8 +208,8 @@ cv:=NewCanvas([Text(_BOLD(&quot;Beginner Coulomb's Law Question&quot;)),	#Making
 	
 ShareCanvas(cv);	#Sharing learn canvas link</EC-CodeEditor></CodeEditor-ExecGroup>
 <TaskRegion Mutable="false" Label="L6" ContextMenu="">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L121" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=ELPMKIGQAKHOEOILPUJHGSDTHLNTLFGMNTJTKTHRBJIOGGJMCUBMIFDHOQKTLLFOMJCHPRGFLQKKNTIRIKHSKHJTBGIGCFGOFNEF" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=ELPMKIGQAKHOEOILPUJHGSDTHLNTLFGMNTJTKTHRBJIOGGJMCUBMIFDHOQKTLLFOMJCHPRGFLQKKNTIRIKHSKHJTBGIGCFGOFNEF</Font></Hyperlink></Text-field>
+<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L136" drawlabel="true">
+<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=CQOUCTEPMRCMAJDGEUITALGTPJLKDKOPNMBSNNDSNHLFCUHPNMHRELFNLGJIDICKISLGKTGMGIMJGQCOALPNKHMPCUJPEGFJFKIO" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=CQOUCTEPMRCMAJDGEUITALGTPJLKDKOPNMBSNNDSNHLFCUHPNMHRELFNLGJIDICKISLGKTGMGIMJGQCOALPNKHMPCUJPEGFJFKIO</Font></Hyperlink></Text-field>
 </Input>
 </Group>
 </TaskRegion>
