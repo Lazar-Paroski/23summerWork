@@ -84,6 +84,21 @@
 <Highlighter-style name="Highlighter 2" pen-color="[255,204,0]" pen-height="14.0" pen-width="14.0" pen-opacity="0.8"/>
 </Styles>
 <Startup-Code startupcode=""/>
+<Metadata-table>
+	<Metadata-category name="&lt;default&gt;"/>
+	<Metadata-tag id="0" category="&lt;default&gt;" name="Document Properties">
+		<Metadata-attribute name="X-CloudURL" value="https://maple.cloud"/>
+		<Metadata-attribute name="X-CloudId" value="5799625849831424"/>
+		<Metadata-attribute name="Keywords" value="&lt;default&gt;"/>
+		<Metadata-attribute name="Item List" value="true"/>
+		<Metadata-attribute name="X-CloudGroup" value="private"/>
+		<Metadata-attribute name="Title" value="&lt;default&gt;"/>
+		<Metadata-attribute name="Author" value="&lt;default&gt;"/>
+		<Metadata-attribute name="X-CloudVersion" value="1"/>
+		<Metadata-attribute name="X-CloudXId" value="1905475"/>
+		<Metadata-attribute name="Subject" value="&lt;default&gt;"/>
+	</Metadata-tag>
+</Metadata-table>
 <Task-table>
 	<Task-category name="&lt;default&gt;"/>
 </Task-table>
@@ -107,7 +122,7 @@ tryAnother := proc(canvas)
 	# Then, replace the line below with one or more new variable definitions 
 	
 	# Displays new question	
-	local txt := Text(&quot;Given %1 and %2 what is the answer.&quot;,x,y);
+	local txt := Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. See group 4 for a visualization of the situation.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3]);
 	
 	SetActive(sc, &quot;question&quot;);
 	SetText(sc, txt):
@@ -119,6 +134,10 @@ tryAnother := proc(canvas)
 	SetActive(sc, &quot;inputbox&quot;);
 	Annotate(sc,&quot;&quot;);
 	SetMath(sc, &quot;&quot;);
+
+	SetActive(sc, &quot;solGroup&quot;);
+	ClearGroup(sc);
+	SetText(sc,&quot;The steps will appear here:&quot;);
 	
 	# Updates State - this is where the variable data is stored as the user answers the question.
 	SetState(sc, [x,y]);
@@ -133,7 +152,8 @@ getAnswer := proc(x,y)
 	# Use the appropriate calculations to derive the solution to the problem, 
 	# then replace the 0 below with a definition for the solution.
 	
-	local solution := x+y;
+	local solution := evalf[3]((2)*((8.99)*((10)^(9))*((((x)*((10)^(-6)))*((y)*((10)^(-6))))/(0.2))*(0.894)))
+;
 	return solution; 
 end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L9" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion3" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Check Answer Procedure
 
@@ -154,10 +174,14 @@ CheckAns := proc(canvas)
 	# Gets the user's input.
 	local user_in := DocumentTools:-Canvas:-GetMath(cv, custom = &quot;inputbox&quot;)[1]:-math;
 
-	# Displays correct or incorrect depending on whether the user's input equals the solution.
+	# Displays correct or incorrect depending on whether the user's input equals the solution (within a 3% error margin).
 	# Change this if statement if you need a different method of comparing the user's input and solution.
-	if user_in = sol then
-		Annotate(sc, &quot;Correct.&quot;);
+	if user_in &lt; sol+sol*0.03 then
+		if user_in &gt; sol-sol*0.03 then
+			Annotate(sc, &quot;Correct!&quot;);
+		else
+			Annotate(sc, &quot;Incorrect.&quot;);
+		end if;	
 	else
 		Annotate(sc, &quot;Incorrect.&quot;);
 	end if;
@@ -192,9 +216,63 @@ getHint := proc(canvas)
 	SetActive(sc, &quot;solbox&quot;);
 	
 	# Displays the hint in the hint cell.  Use Text(&quot;%1&quot;, math) format to write math.
-	SetText(sc,Text(&quot;This is the super improtant hint&quot;));
+	SetText(sc,Text(&quot;The y forces that %1 and %2 exert on %3 will cancel each other out.&quot;,q[1],q[2],q[3]));
 	ToString(sc);
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L15" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion6" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Generate Canvas
+end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L79" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion7" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Show Steps Procedures
+GetSolQ := proc(x,y)
+
+	local ans := [Text(&quot;Since %1 and %2 have the same charge, are the same x distance from %3, and their y distances are equal and opposite, the resulting y force on %4 will be zero, and the resulting x force on %5 will be twice the force that %6 is exerting on %7.&quot;,q[1],q[2],q[3],q[3],q[3],q[1],q[3]),
+		   Text(&quot;To find the force that %1 exerts on %2, %3 = %4 can be used.&quot;,q[1],q[3],F[q1q3],evalf[3](((8.99)*((10)^(9)))*((q[1])*(q[3])))/((r)^(2))), 		
+		   &quot;Before using the equation above, the charges must be converted to Coulombs.&quot;,
+		   Text(&quot;The converted values are %1=%2C, and %3=%4C.&quot;,q[1],(x)%*(10)%^(-6),q[3],(y)%*(10)%^(-6)),
+		   Text(&quot;The distance (radius) between %1 and %2 must also be found. The following calculation can be done since it is the hypotenuse of a triangle with sides 0.2 and 0.4.&quot;,q[1],q[3]),
+		   Text(&quot;Radius = %1&quot;,sqrt(((0.2)%^(2))%+((0.4)%^(2)))),
+		   &quot;Plugging these values into the equation, it can be found that&quot;,
+		   Text(&quot;%1 = %2&quot;,F[q1q3],evalf[3](((8.99)%*((10)%^(9)))%*(((x)%*((10)%^(-6)))%*((y)%*((10)%^(-6)))))%/((sqrt(((0.2)%^(2))%+((0.4)%^(2))))%^(2))),
+		   Text(&quot;%1 = %2&quot;,F[q1q3],evalf[4]((((8.99)*((10)^(9)))*(((x)*((10)^(-6)))*((y)*((10)^(-6)))))/((sqrt(((0.2)^(2))+((0.4)^(2))))^(2)))),
+		   Text(&quot;With basic trig it can be found that the angle between %1 and %2 is 26.57deg.&quot;,q[1],q[3]),
+		   &quot;Next the x component of the force found must be found:&quot;,
+		   Text(&quot;x component %1 = %2&quot;,F[q1q3],evalf[4]((cos(0.4637))*((((8.99)*((10)^(9)))*(((x)*((10)^(-6)))*((y)*((10)^(-6)))))/((sqrt(((0.2)^(2))+((0.4)^(2))))^(2))))),
+		   Text(&quot;Finally, the force found above needs to be multiplied by 2 to account for %1.&quot;,q[2]),
+		   Text(&quot;So the resulting force that %1 and %2 exert on %3 is:&quot;,q[1],q[2],q[3]),
+		   Text(&quot;= %1&quot;,evalf[4]((2)*((cos(0.4637))*((((8.99)*((10)^(9)))*(((x)*((10)^(-6)))*((y)*((10)^(-6)))))/((sqrt(((0.2)^(2))+((0.4)^(2))))^(2))))))
+		  ];
+	return ans;
+end proc:
+
+#----------------New procedure-------------
+
+ShowSolQ := proc(canvas):	#Main procedure that will show the solution
+	local sc := Script();
+	SetOption(sc, &quot;DELAY&quot;, 20);	#setting delay for string var
+	SetActive(sc,&quot;solGroup&quot;);	#Focusing on the group
+	ClearGroup(sc);	#clearing activated group
+	SetActive(sc,&quot;sol&quot;);	#Focusing on the solution itself
+	SetText(sc, &quot;Steps:&quot;);	#Setting the first line of sc to Solution:
+
+	# Grabs the variable data here.
+	local x,y;
+	local state := GetElements(canvas, &quot;state&quot;)[1]:-value;
+	x,y := op(state);
+	
+	local solution := GetSolQ(x,y);	#Assigning the solution in getSol to the solution variable
+
+	for local i from 1 to numelems(solution) do	#Cycles through each line of solution
+
+		if type(solution[i], string) or type(solution[i], record) then	#If a string then...
+			SetText(sc,solution[i],'where' = &quot;below&quot;);	#Add the text to sc - below
+		else                                                            
+			SetMath(sc,solution[i],'where' = &quot;below&quot;);	#If its math add it to sc - below
+			
+			SetOption(sc, &quot;PLOT&quot;, false);		#Toggle Plot Window
+			SetOption(sc, &quot;RESULT&quot;, false);	#Toggle result annotation
+		end if;
+	end do;	#ending the loop
+
+	return ToString(sc);	#To string allows to return var as string
+	
+end proc:
+</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L15" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion6" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Generate Canvas
 
 randomize():
 x := rand(1...10)():
@@ -202,45 +280,55 @@ y := rand(1...10)():
 
 cv := NewCanvas([
 				# Title text
-				Text(_BOLD(&quot;Important Quiz Title&quot;)),
+				Text(_BOLD(&quot;Intermediate Coulomb's Law Questions&quot;)),
 				
 				# Initial question text
-				Text(&quot;Given %1 and %2 what is the solution?.&quot;,x,y, 
-					position=[30, 65], custom = &quot;question&quot;),
+				Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. See group 4 for a visualization of the situation.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3],position=[30, 65], custom = &quot;question&quot;),
 				
 				# Buttons.  They are formatted as follows:
 				ScriptButton(
 					&quot;Check Answer&quot;, 		# Label on button
 					CheckAns, 				# Procedure when clicked
 					include = [getAnswer], 	# Additional procedure
-					position = [500,180], 	# x,y coordinates of button
+					position = [620,210], 	# x,y coordinates of button
 					size=[150,25]),			# Horizontal and vertical height
 				
-				ScriptButton(&quot;Try Another&quot;, tryAnother, position = [500, 250], size=[150,25]),
+				ScriptButton(&quot;Try Another&quot;, tryAnother, position = [620, 280], size=[150,25]),
 				
-				ScriptButton(&quot;Show Solution&quot;, showAnswer, include = [getAnswer], position = [500, 320], size=[150,25]),
+				ScriptButton(&quot;Show Answer&quot;, showAnswer, include = [getAnswer], position = [620, 350], size=[150,25]),
 				
-				ScriptButton(&quot;Hint&quot;, getHint, position = [500, 390], size=[150,25]),
+				ScriptButton(&quot;Hint&quot;, getHint, position = [620, 420], size=[150,25]),
 
+				ScriptButton(&quot;Show Steps&quot;,	#Button name 
+				ShowSolQ,	#Main procedure
+				include=[GetSolQ],	#Extra procedure
+				size=[150,25],	#Defining size
+				position=[620,490]),	#Defining position
+				
 				# User input group
 				Group([
 					&quot;Write your answer below:&quot;, 
 					Math(&quot;&quot;, custom = &quot;inputbox&quot;)], 
-					position = [50, 180]),
+					position = [50, 220]),
 
 				# Solution output group
 				Group([
-					Text(&quot;Solution/Hint:&quot;), 
+					Text(&quot;Answer (in N)/Hint:&quot;), 
 					Text(&quot;&quot;, custom = &quot;solbox&quot;)], 
-					position = [50, 350]),
+					position = [50, 320]),
+
+				Group([
+					Text(&quot;The steps will appear here:&quot;,custom=&quot;sol&quot;),
+					Text(&quot;&quot;, custom = &quot;stepbox&quot;)],
+					custom=&quot;solGroup&quot;),#Solution will appear here
 				
 				# State - this is where the variable data is stored as the user answers the question.  
 				# Put your initial variables here.
 				State([x,y])]):
 ShareCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
 <TaskRegion Mutable="false" Label="L15" ContextMenu="">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L19" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=LHJPKNFOPQKQLQKTOSMKFPOMCTAMDUPPAPATFJCLGSOHOOBGOIPSMKLSANEKJKCIJGKRGMPKNFETBHHIAODTDLNPOKDPEODGGKFN" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=LHJPKNFOPQKQLQKTOSMKFPOMCTAMDUPPAPATFJCLGSOHOOBGOIPSMKLSANEKJKCIJGKRGMPKNFETBHHIAODTDLNPOKDPEODGGKFN</Font></Hyperlink></Text-field>
+<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L276" drawlabel="true">
+<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=ILJUEMGUJUBUCRGLKNHMCRJHNNOKGTISMJHTEUEJJPDGHHJIFKKHHUMTBICQKKMSGUJTIHIJERPFMPNKBKCGENLUDMGLJSFOKGKL" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=ILJUEMGUJUBUCRGLKNHMCRJHNNOKGTISMJHTEUEJJPDGHHJIFKKHHUMTBICQKKMSGUJTIHIJERPFMPNKBKCGENLUDMGLJSFOKGKL</Font></Hyperlink></Text-field>
 </Input>
 </Group>
 </TaskRegion>
