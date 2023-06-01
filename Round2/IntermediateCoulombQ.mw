@@ -94,7 +94,7 @@
 		<Metadata-attribute name="X-CloudGroup" value="private"/>
 		<Metadata-attribute name="Title" value="&lt;default&gt;"/>
 		<Metadata-attribute name="Author" value="&lt;default&gt;"/>
-		<Metadata-attribute name="X-CloudVersion" value="1"/>
+		<Metadata-attribute name="X-CloudVersion" value="6"/>
 		<Metadata-attribute name="X-CloudXId" value="1905475"/>
 		<Metadata-attribute name="Subject" value="&lt;default&gt;"/>
 	</Metadata-tag>
@@ -122,7 +122,7 @@ tryAnother := proc(canvas)
 	# Then, replace the line below with one or more new variable definitions 
 	
 	# Displays new question	
-	local txt := Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. See group 4 for a visualization of the situation.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3]);
+	local txt := Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. A visualization of the situation can be found to the right.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3]);
 	
 	SetActive(sc, &quot;question&quot;);
 	SetText(sc, txt):
@@ -138,6 +138,10 @@ tryAnother := proc(canvas)
 	SetActive(sc, &quot;solGroup&quot;);
 	ClearGroup(sc);
 	SetText(sc,&quot;The steps will appear here:&quot;);
+
+	SetActive(sc, &quot;workGroup&quot;);
+	ClearGroup(sc);
+	SetText(sc,&quot;Do rough work here:&quot;);
 	
 	# Updates State - this is where the variable data is stored as the user answers the question.
 	SetState(sc, [x,y]);
@@ -283,7 +287,7 @@ cv := NewCanvas([
 				Text(_BOLD(&quot;Intermediate Coulomb's Law Questions&quot;)),
 				
 				# Initial question text
-				Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. See group 4 for a visualization of the situation.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3],position=[30, 65], custom = &quot;question&quot;),
+				Text(&quot;Two equivalent point charges, %1 and %2, are located at x=0 meters y=0.2 meters, and x=0 meters y=-0.2 meters, respectively. A third point charge %3 is located at x=0.4 meters y=0 meters. If the charges of %4, %5, and %6 are %7 Microcoulomb (uC), %8uC, and %9uC, respectively, what is the magnitude of the electric force that %10 and %11 exert on %12? Do not enter units in the 'write your answer below:' box. Newtons are assumed. A visualization of the situation can be found to the right.&quot;,q[1],q[2],q[3],q[1],q[2],q[3],x,x,y,q[1],q[2],q[3],position=[30, 65], custom = &quot;question&quot;),
 				
 				# Buttons.  They are formatted as follows:
 				ScriptButton(
@@ -321,14 +325,19 @@ cv := NewCanvas([
 					Text(&quot;The steps will appear here:&quot;,custom=&quot;sol&quot;),
 					Text(&quot;&quot;, custom = &quot;stepbox&quot;)],
 					custom=&quot;solGroup&quot;),#Solution will appear here
+
+				Group([
+					Text(&quot;Do rough work here:&quot;),
+					Text(&quot;&quot;, custom = &quot;workbox&quot;)], 
+					custom = &quot;workGroup&quot;),
 				
 				# State - this is where the variable data is stored as the user answers the question.  
 				# Put your initial variables here.
 				State([x,y])]):
 ShareCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
 <TaskRegion Mutable="false" Label="L15" ContextMenu="">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L276" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=ILJUEMGUJUBUCRGLKNHMCRJHNNOKGTISMJHTEUEJJPDGHHJIFKKHHUMTBICQKKMSGUJTIHIJERPFMPNKBKCGENLUDMGLJSFOKGKL" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=ILJUEMGUJUBUCRGLKNHMCRJHNNOKGTISMJHTEUEJJPDGHHJIFKKHHUMTBICQKKMSGUJTIHIJERPFMPNKBKCGENLUDMGLJSFOKGKL</Font></Hyperlink></Text-field>
+<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L317" drawlabel="true">
+<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=FFBSMHDFKOIULKLMPFETLGLJJIPIGUDKPMNNNKJNKHITMHKKBMDFNKNGNINJJQCGJJOFMTGPLSKFCONMOUPPKHAQHLDOPILKFRAR" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=FFBSMHDFKOIULKLMPFETLGLJJIPIGUDKPMNNNKJNKHITMHKKBMDFNKNGNINJJQCGJJOFMTGPLSKFCONMOUPPKHAQHLDOPILKFRAR</Font></Hyperlink></Text-field>
 </Input>
 </Group>
 </TaskRegion>
