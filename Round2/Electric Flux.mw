@@ -84,21 +84,6 @@
 <Highlighter-style name="Highlighter 2" pen-color="[255,204,0]" pen-height="14.0" pen-width="14.0" pen-opacity="0.8"/>
 </Styles>
 <Startup-Code startupcode=""/>
-<Metadata-table>
-	<Metadata-category name="&lt;default&gt;"/>
-	<Metadata-tag id="0" category="&lt;default&gt;" name="Document Properties">
-		<Metadata-attribute name="X-CloudURL" value="https://maple.cloud"/>
-		<Metadata-attribute name="X-CloudId" value="5799625849831424"/>
-		<Metadata-attribute name="Keywords" value="&lt;default&gt;"/>
-		<Metadata-attribute name="Item List" value="true"/>
-		<Metadata-attribute name="X-CloudGroup" value="private"/>
-		<Metadata-attribute name="Title" value="&lt;default&gt;"/>
-		<Metadata-attribute name="Author" value="&lt;default&gt;"/>
-		<Metadata-attribute name="X-CloudVersion" value="9"/>
-		<Metadata-attribute name="X-CloudXId" value="1905475"/>
-		<Metadata-attribute name="Subject" value="&lt;default&gt;"/>
-	</Metadata-tag>
-</Metadata-table>
 <Task-table>
 	<Task-category name="&lt;default&gt;"/>
 </Task-table>
@@ -106,236 +91,44 @@
 <Group labelreference="L1" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
 <Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
 </Input>
-</Group><CodeEditor-ExecGroup view="presentation" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Importing packages
-restart:
-with(DocumentTools:-Canvas):</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L5" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion1" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#New Question Procedure
+</Group><CodeEditor-ExecGroup view="presentation" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Improting stuff
+with(DocumentTools:-Canvas):
+with(plots):
 
-tryAnother := proc(canvas)
-	# Setup
-	randomize();
-	local sc := Script();
-	#Sets delay
-	SetOption(sc, &quot;DELAY&quot;, 0);
-	#Randomizing variables
-	local f1,f2;
-	f1:= rand(1..10)();
-	f2:= rand(1..10)();
-	
-	# Displays new question	
-	local txt := Text(&quot;Two equivalent point charges, %1 and %2, are located at %3=0 meters %4=0.2 meters, and %5=0 meters %6=-0.2 meters, respectively. A third point charge %7 is located at %8=0.4 meters %9=0 meters. If the charges of %10, %11, and %12 are %13 \302\265C, %14\302\265C, and %15\302\265C, respectively, what is the magnitude of the electric force that %16 and %17 exert on %18 to 2 decimal places? Do not enter units in the 'write your answer below:' box. Newtons are assumed. A visualization of the situation can be found to the right.&quot;,q[1],q[2],x[1],y[1],x[2],y[2],q[3],x[3],y[3],q[1],q[2],q[3],f1,f1,f2,q[1],q[2],q[3]);
-	
-	SetActive(sc, &quot;question&quot;);
-	SetText(sc, txt):
-	
-	# Clears existing input
-	SetActive(sc, &quot;solbox&quot;);
-	SetText(sc, &quot;&quot;);
-	
-	SetActive(sc, &quot;inputbox&quot;);
-	Annotate(sc,&quot;&quot;);
-	SetMath(sc, &quot;&quot;);
+#Update button procedure
+FieldPlot := proc( canvas )
+    #getting slider values and seperating them into math
+    local xval := op(2,GetMath(canvas,custom=&quot;slider1&quot;)[1]:-math);
+    local yval := op(2,GetMath(canvas,custom=&quot;slider2&quot;)[1]:-math);
 
-	SetActive(sc, &quot;solGroup&quot;);
-	ClearGroup(sc);
-	SetText(sc,&quot;The steps will appear here:&quot;);
-
-	SetActive(sc, &quot;workGroup&quot;);
-	ClearGroup(sc);
-	SetText(sc,&quot;Do rough work here:&quot;);
-	
-	# Updates State - this is where the variable data is stored as the user answers the question.
-	SetState(sc, [f1,f2]);
-	return ToString(sc);
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L7" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion2" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Get Answer Procedure
-
-getAnswer := proc(f1,f2)
-
-	#Does the math to find the solution
-	local solution := evalf[3]((2)*((8.99)*((10)^(9))*((((f1)*((10)^(-6)))*((f2)*((10)^(-6))))/(0.2))*(0.894)))
-;
-	#Returns the correct solution
-	return solution; 
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L9" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion3" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Check Answer Procedure
-
-CheckAns := proc(canvas)
-	# Setup
-	local sc := Script();
-	SetOption(sc, &quot;DELAY&quot;, 0);
-	SetActive(sc, &quot;inputbox&quot;);
-	
-	# Grabs the variable data here. 
-	local f1,f2;
-	local state := GetElements(canvas, &quot;state&quot;)[1]:-value;
-	f1,f2 := op(state);
-	
-	# Gets the solution from the getAnswer procedure.
-	local sol := getAnswer(f1,f2);
-	
-	# Gets the user's input.
-	local user_in := DocumentTools:-Canvas:-GetMath(cv, custom = &quot;inputbox&quot;)[1]:-math;
-
-	# Displays correct or incorrect depending on whether the user's input equals the solution (within a 3% error margin).
-	if user_in &lt; sol+sol*0.03 then
-		if user_in &gt; sol-sol*0.03 then
-			Annotate(sc, &quot;Correct!&quot;);
-		else
-			Annotate(sc, &quot;Incorrect.&quot;);
-		end if;	
-	else
-		Annotate(sc, &quot;Incorrect.&quot;);
-	end if;
-	
-	return ToString(sc);
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L11" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion4" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Solution Procedure
-
-showAnswer := proc(canvas)
-	# Setup
-	local sc := Script();
-	SetOption(sc, &quot;DELAY&quot;, 0);
-	SetActive(sc, &quot;solbox&quot;);
-	
-	# Grabs the variable data here.
-	local f1,f2;
-	local state := GetElements(canvas, &quot;state&quot;)[1]:-value;
-	f1,f2 := op(state);
-	
-	# Gets the solution from the getAnswer procedure.
-	local sol := getAnswer(f1,f2);
-	
-	# Inserts the solution into the canvas
-	SetMath(sc, sol);
-	
-	return ToString(sc);
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L13" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion5" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Hint procedure
-
-getHint := proc(canvas)
-	# Setup
-	local sc := Script();
-	SetActive(sc, &quot;solbox&quot;);
-	
-	# Displays the hint in the hint cell.
-	SetText(sc,Text(&quot;The y forces that %1 and %2 exert on %3 will cancel each other out.&quot;,q[1],q[2],q[3]));
-	ToString(sc);
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L79" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion7" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Show Steps Procedures
-GetSolQ := proc(f1,f2)
-
-	# defining the answer
-	local ans := [Text(&quot;Since %1 and %2 have the same charge, are the same x distance from %3, and their y distances are equal and opposite, the resulting y force on %4 will be zero, and the resulting x force on %5 will be twice the force that %6 is exerting on %7.&quot;,q[1],q[2],q[3],q[3],q[3],q[1],q[3]),
-		   Text(&quot;To find the force that %1 exerts on %2, %3 = %4 'Coulomb's Law' can be used.&quot;,q[1],q[3],F[q1q3],evalf[3](((8.99)*((10)^(9)))*((q[1])*(q[3])))/((r)^(2))), 		
-		   &quot;Before using the equation above, the charges must be converted to Coulombs.&quot;,
-		   Text(&quot;The converted values are %1=%2C, and %3=%4C.&quot;,q[1],(f1)%*(10)%^(-6),q[3],(f2)%*(10)%^(-6)),
-		   Text(&quot;The distance (radius) between %1 and %2 must also be found. We'll use the Pythagorean Theorem since the radius is the hypotenuse of a triangle with sides 0.2 and 0.4.&quot;,q[1],q[3]),
-		   Text(&quot;Radius = %1&quot;,sqrt(((0.2)%^(2))%+((0.4)%^(2)))),
-		   &quot;Plugging these values into the equation, it can be found that&quot;,
-		   F[q1q3] = evalf[3](((8.99)%*((10)%^(9)))%*(((f1)%*((10)%^(-6)))%*((f2)%*((10)%^(-6)))))%/((sqrt(((0.2)%^(2))%+((0.4)%^(2))))%^(2)),
-		   Text(&quot;With basic trig, it can be found that the angle between %1 and %2 is 26.57\302\260.&quot;,q[1],q[3]),
-		   Text(&quot;atan(%1) = 26.57\302\260&quot;,0.2%/0.4),
-	   &quot;Next, the x component of the force must be found. This is done by multiplying the force by cos(26.57\302\260).&quot;,
-		   F[xq1q3] = evalf[4]((cos(0.4637))%*((((8.99)%*((10)%^(9)))%*(((f1)%*((10)%^(-6)))%*((f2)%*((10)%^(-6)))))%/((sqrt(((0.2)%^(2))%+((0.4)%^(2))))%^(2)))),
-		   Text(&quot;Finally, the force found above needs to be multiplied by 2 to account for %1.&quot;,q[2]),
-		   Text(&quot;So, the resulting force that %1 and %2 exert on %3 is:&quot;,q[1],q[2],q[3]),
-		   F[final] = evalf[4]((2)%*((cos(0.4637))%*((((8.99)%*((10)%^(9)))%*(((f1)%*((10)%^(-6)))%*((f2)%*((10)%^(-6)))))%/((sqrt(((0.2)%^(2))%+((0.4)%^(2))))%^(2)))))
-		  ];
-
-	# returning the ans
-	return ans;
+    local i;
+    #Applying the slider values tto the plots	
+    local p := fieldplot([x-xval, y-yval], x = -10 .. 10, y = -10 .. 10, arrows = SLIM, fieldstrength = fixed, grid=[10,10]);
+    local b := pointplot([xval, yval],color=[red]);
+    local c := contourplot((x-xval)^2 + (y-yval)^2, contours = [seq(10*i, i = 1 .. 3)],filledregions = true,colorscheme = [&quot;LightBlue&quot;,&quot;White&quot;], x = -10 .. 10, y = -10 .. 10);
+     
+    #Updates plot in current position
+    local script := Script();
+    local pelem := GetElements(canvas,&quot;plot&quot;);
+    script:-SetActive(script,pelem[1]);
+    script:-SetPlot(script,plots:-display(c,p,b));
+    script:-ToString(script);
+    
 end proc:
 
-#----------------New procedure-------------
-# Procedure that will show the steps
+#Initial conditions for values and plots
+xval := Slider('x'=0,'bounds'=-10..10,custom=&quot;slider1&quot;):
+yval := Slider('y'=0,'bounds'=-10..10,custom=&quot;slider2&quot;):
+p := fieldplot([x, y], x = -10 .. 10, y = -10 .. 10, arrows = SLIM, fieldstrength = fixed, grid=[10,10]):
+b := pointplot([0, 0],color=[red]):
+c := contourplot((x)^2 + (y)^2, contours = [seq(10*i, i = 1 .. 3)],filledregions = true,colorscheme = [&quot;LightBlue&quot;,&quot;White&quot;], x = -10 .. 10, y = -10 .. 10):
 
-ShowSolQ := proc(canvas):	
-	local sc := Script();
-	SetOption(sc, &quot;DELAY&quot;, 60);	#setting delay for string var
-	SetActive(sc,&quot;solGroup&quot;);	#Focusing on the group
-	ClearGroup(sc);	#clearing activated group
-	SetActive(sc,&quot;sol&quot;);	#Focusing on the solution itself
-	SetText(sc, &quot;Steps:&quot;);	#Setting the first line of sc to Steps:
 
-	# Grabs the variable data here.
-	local f1,f2;
-	local state := GetElements(canvas, &quot;state&quot;)[1]:-value;
-	f1,f2 := op(state);
-	
-	local solution := GetSolQ(f1,f2);	#Assigning the solution in getSol to the solution variable
-
-	for local i from 1 to numelems(solution) do	#Cycles through each line of solution
-
-		if type(solution[i], string) or type(solution[i], record) then	#If a string then...
-			SetText(sc,solution[i],'where' = &quot;below&quot;);	#Add the text to sc - below
-		else                                                            
-			SetMath(sc,solution[i],'where' = &quot;below&quot;);	#If its math add it to sc - below
-			
-			SetOption(sc, &quot;PLOT&quot;, false);		#Toggle Plot Window
-			SetOption(sc, &quot;RESULT&quot;, true);	#Toggle show results for math cells
-		end if;
-	end do;	#ending the loop
-
-	return ToString(sc);	#To string allows to return var as string
-	
-end proc:
-</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L15" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion6" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">#Generate Canvas
-
-randomize():
-f1 := rand(1...10)():
-f2 := rand(1...10)():
-
-cv := NewCanvas([
-				# Title text
-				Text(_BOLD(&quot;Intermediate Coulomb's Law Questions&quot;)),
-				
-				# Initial question text
-				Text(&quot;Two equivalent point charges, %1 and %2, are located at %3=0 meters %4=0.2 meters, and %5=0 meters %6=-0.2 meters, respectively. A third point charge %7 is located at %8=0.4 meters %9=0 meters. If the charges of %10, %11, and %12 are %13 \302\265C, %14\302\265C, and %15\302\265C, respectively, what is the magnitude of the electric force that %16 and %17 exert on %18 to 2 decimal places? Do not enter units in the 'write your answer below:' box. Newtons are assumed. A visualization of the situation can be found to the right.&quot;,q[1],q[2],x[1],y[1],x[2],y[2],q[3],x[3],y[3],q[1],q[2],q[3],f1,f1,f2,q[1],q[2],q[3],position=[30, 65], custom = &quot;question&quot;),
-				
-				# Buttons.  They are formatted as follows:
-				ScriptButton(
-					&quot;Check Answer&quot;, 		# Label on button
-					CheckAns, 				# Procedure when clicked
-					include = [getAnswer], 	# Additional procedure
-					position = [620,210], 	# x,y coordinates of button
-					size=[140,35]),			# Horizontal and vertical height
-				
-				ScriptButton(&quot;Try Another&quot;, tryAnother, position = [620, 280], size=[140,35]),
-				
-				ScriptButton(&quot;Show Answer&quot;, showAnswer, include = [getAnswer], position = [620, 350], size=[140,35]),
-				
-				ScriptButton(&quot;Hint&quot;, getHint, position = [620, 420], size=[140,35]),
-
-				ScriptButton(&quot;Show Steps&quot;,	#Button name 
-				ShowSolQ,	#Main procedure
-				include=[GetSolQ],	#Extra procedure
-				size=[140,35],	#Defining size
-				position=[620,490]),	#Defining position
-				
-				# User input group
-				Group([
-					&quot;Write your answer below:&quot;, 
-					Math(&quot;&quot;, custom = &quot;inputbox&quot;)], 
-					position = [50, 220]),
-
-				# Solution output group
-				Group([
-					Text(&quot;Answer (in N)/Hint:&quot;), 
-					Text(&quot;&quot;, custom = &quot;solbox&quot;)], 
-					position = [50, 320]),
-
-				Group([
-					Text(&quot;The steps will appear here:&quot;,custom=&quot;sol&quot;),
-					Text(&quot;&quot;, custom = &quot;stepbox&quot;)],
-					custom=&quot;solGroup&quot;),#Solution will appear here
-
-				Group([
-					Text(&quot;Do rough work here:&quot;),
-					Text(&quot;&quot;, custom = &quot;workbox&quot;)], 
-					custom = &quot;workGroup&quot;),
-				
-				# State - this is where the variable data is stored as the user answers the question.  
-				State([f1,f2])]):
-ShareCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
-<TaskRegion Mutable="false" Label="L15" ContextMenu="NiI=NiI=">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L426" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=EGJLEMLHHGDKDUENASJPHIESCMMUEQATPNPNGJBHEKMIOSCIGKGMAIAIHKGNKQBUCHFJMKIFGFKLDIJRIOAFAIKRLGLTOROKFUKU" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=EGJLEMLHHGDKDUENASJPHIESCMMUEQATPNPNGJBHEKMIOSCIGKGMAIAIHKGNKQBUCHFJMKIFGFKLDIJRIOAFAIKRLGLTOROKFUKU</Font></Hyperlink></Text-field>
-</Input>
-</Group>
-</TaskRegion>
+#Canvas stuff
+cv := NewCanvas( [&quot;Electric field&quot;,
+			    Group([xval,yval]), 
+                   StaticPlot(plots:-display(c,p,b)),
+                   ScriptButton(&quot;Update Plot&quot;,FieldPlot,position=[460,120])]):
+                 
+ShareCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L5" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion1" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">ShowCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
 </Worksheet>
