@@ -301,11 +301,11 @@ cv := NewCanvas([
 				
 				ScriptButton(&quot;Hint&quot;, getHint, position = [620, 420], size=[140,35]),
 
-				ScriptButton(&quot;Show Steps&quot;,	#Button name 
-				ShowSolQ,	#Main procedure
-				include=[GetSolQ],	#Extra procedure
-				size=[140,35],	#Defining size
-				position=[620,490]),	#Defining position
+				ScriptButton(&quot;Show Steps&quot;,	
+				ShowSolQ,	
+				include=[GetSolQ],
+				size=[140,35],	
+				position=[620,490]),	
 				
 				# User input group
 				Group([
