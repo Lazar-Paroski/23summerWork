@@ -84,102 +84,40 @@
 <Highlighter-style name="Highlighter 2" pen-color="[255,204,0]" pen-height="14.0" pen-width="14.0" pen-opacity="0.8"/>
 </Styles>
 <Startup-Code startupcode=""/>
-<Metadata-table>
-	<Metadata-category name="&lt;default&gt;"/>
-	<Metadata-tag id="0" category="&lt;default&gt;" name="Document Properties">
-		<Metadata-attribute name="X-CloudURL" value="https://maple.cloud"/>
-		<Metadata-attribute name="X-CloudId" value="5641744793993216"/>
-		<Metadata-attribute name="Keywords" value="&lt;default&gt;"/>
-		<Metadata-attribute name="Item List" value="true"/>
-		<Metadata-attribute name="X-CloudGroup" value="private"/>
-		<Metadata-attribute name="Title" value="&lt;default&gt;"/>
-		<Metadata-attribute name="Author" value="&lt;default&gt;"/>
-		<Metadata-attribute name="X-CloudVersion" value="1"/>
-		<Metadata-attribute name="X-CloudXId" value="1905475"/>
-		<Metadata-attribute name="Subject" value="&lt;default&gt;"/>
-	</Metadata-tag>
-</Metadata-table>
 <Task-table>
 	<Task-category name="&lt;default&gt;"/>
 </Task-table>
 <Task/>
 <Group labelreference="L1" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
-</Input>
-</Group><CodeEditor-ExecGroup view="presentation" labelreference="L3" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion0" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">restart():
-with(DocumentTools:-Canvas):
-with(plots):</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L5" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion1" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">readTab := proc(canvas):
-	# Here's your code to access the values.
-	# The output of this is a matrix, so calling tab[1][2] gives you column 1 row 2.
-	# So if you're making x-y points, the points will be (tab[1][1], tab[2][1]), (tab[2][1], tab[2][2])), etc.
-	# Then you can add whatever scripts you want to this to have it do stuff.
-	# If you need anything else from me, just let me know! :)
-	local tab := convert(GetElements(canvas, custom=&quot;tab&quot;)[1]:-math,list,nested);
-
-	# Finding the center point 
-	local d1:= diff(sum((m*tab[1][i]+b-tab[2][i])^2,i=1..5),m)=0;
-	local d2:= diff(sum((m*tab[1][i]+b-tab[2][i])^2,i=1..5),b)=0;
-	local d3:= solve([d1,d2]);
-	local p3:= solve(d3[1]);
-	local p4:= solve(d3[2]);
-	local p0:= pointplot([p4,p3]);
-	
-	local p5:= sum((p4*tab[1][i]+p3-tab[2][i])^2,i=1..5);
-	local L0:= pointplot3d([p4,p3,p5],color=red);
-
-	#Plots
-	local p1 := contourplot(sum((m*tab[1][i]+b-tab[2][i])^2,i=1..5),m=p4-1.4..p4+1.4,b=p3-4.9..p3+4.9,contours=30);
-	
-	local L1 := contourplot3d(sum((m*tab[1][i]+b-tab[2][i])^2,i=1..5),m=p4-1.4..p4+1.4,b=p3-4.9..p3+4.9,contours=6,orientation=[90,0,0]);
-
-
-	# don't forget to change between plot and plot 3d depending on what kind of plot you are using
-	local script := Script();
-     local pelem := GetElements(canvas,&quot;plot&quot;); 
-     SetActive(script,pelem[1]);
-     SetPlot(script,display(p1,p0));
-
-     local pele := GetElements(canvas,&quot;plot3d&quot;);
-     SetActive(script,pele[1]);
-     SetPlot(script,display(L1,L0));
-
-     SetActive(script, &quot;averageLine&quot;);
-     SetMath(script, y=evalf[3](p4)*x+evalf[3](p3));
-     
-     ToString(script);
-    
-end proc:</EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L14668" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion4" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true"></EC-CodeEditor></CodeEditor-ExecGroup><CodeEditor-ExecGroup view="presentation" labelreference="L7" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion2" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true"># Some initial input in the form of a list of lists (each sublist is a row)
-tableData := [[1,4],[2,7],[3,5],[4,6],[5,10]]:
-# Tables in Learn scripts are always formatted as a DataFrame, as shown below
-tableInit := DataFrame(Matrix(tableData), columns = [&quot;x&quot;,&quot;y&quot;]):
-
-#Plots are put below
-p1 := contourplot(5*b^2+(30*m-64)*b+55*m^2-214*m+226,m=-0.3..2.5,b=-1.8..8,contours=30):
-p0 := pointplot([1.1,3.1]):
-
-L1 := contourplot3d(5*b^2+(30*m-64)*b+55*m^2-214*m+226,m=-0.3..2.5,b=-1.8..8,contours=6,orientation=[90,0,0]):
-L0 := pointplot3d([1.1,3.1,9.1],color=red):
-
-
-# Canvas with the table in a math cell
-cv := NewCanvas([
-
-			Group([
-			Math(y=1.1*x+3.1, custom = &quot;averageLine&quot;),
-			Math(tableInit,custom=&quot;tab&quot;) 	
-			]),
-
-			ScriptButton(&quot;Update&quot;,readTab,position=[350,300]),
-			
-	 		StaticPlot(display(p1,p0),custom=&quot;two&quot;),
-	 		Plot3D(display(L1,L0))
-	 		
-]):
-ShareCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
-<TaskRegion Mutable="false" Label="L7" ContextMenu="NiI=NiI=">
-<Group view="presentation" hide-input="false" hide-output="false" inline-output="false" labelreference="L23469" drawlabel="true">
-<Input><Text-field style="Text" layout="Normal"><Hyperlink linktarget="https://learn.maplesoft.com/#/?d=FMFOIHNRFHJQCUOJJPKSNJDOENJGOQJFBUMUPTKLATNTBUDUIMAOIOBMHHBUNPOGOIOTOKIFBSBKMIFJDFPFKNBHAJANPTPFENAL" hyperlink="true"><Font style="Hyperlink">https://learn.maplesoft.com/#/?d=FMFOIHNRFHJQCUOJJPKSNJDOENJGOQJFBUMUPTKLATNTBUDUIMAOIOBMHHBUNPOGOIOTOKIFBSBKMIFJDFPFKNBHAJANPTPFENAL</Font></Hyperlink></Text-field>
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">with(plottools):</Text-field>
 </Input>
 </Group>
-</TaskRegion><CodeEditor-ExecGroup view="presentation" labelreference="L9" drawlabel="true" applyint="true" applyrational="true" display="code"><EC-CodeEditor id="CodeEditRegion3" expanded="true" visible="true" pixel-width="500" pixel-height="200" code-language="text/maple" autofit="true" wrapping="true" show-border="true" code-line-numbers="true">ShowCanvas(cv);</EC-CodeEditor></CodeEditor-ExecGroup>
+<Group labelreference="L2" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">with(plots):
+</Text-field>
+</Input>
+</Group>
+<Group labelreference="L4" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">polyBase := polygon([[3.1, 3.1, 0], [-3.1, 3.1, 0], [-3.1, -3.1, 0], [3.1, -3.1, 0]]):
+p1 := pyramid(polyBase,'height'=50.4,transparency = 0.5,color = &quot;LightCoral&quot;):
+
+lineV := curve([[4.1,0,0],[4.1,0,5.4]],thickness=10,color=black):
+lineHd := curve([[4.1,0,5.4],[0,0,5.4]],thickness = 10,color=black,linestyle = dash):
+lineH := curve([[3.1,4.1,0],[-3.1,4.1,0]],thickness = 10,color=black):
+
+vT:= textplot3d([4.7, 0, 3, &quot;5.4&quot;],'font' = [&quot;times&quot;, &quot;roman&quot;, 40]):
+hT:= textplot3d([0, 4.1, -0.3, &quot;3.1&quot;],'font' = [&quot;times&quot;, &quot;roman&quot;, 40]):
+</Text-field>
+</Input>
+</Group>
+<Group labelreference="L3" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">display([p1,lineV,lineHd,lineH,vT,hT],axes=none,scaling=constrained)</Text-field>
+</Input>
+<Output><Text-field style="Maple Plot" layout="Maple Plot"><Plot height="700.0" originalheight="700.0" type="three-dimensional" width="700.0" originalwidth="700.0" plot-scale="1.0" plot-xtrans="0.0" plot-ytrans="0.0" gridlinevisibility="1" legendvisibility="false" input="">LSUnUExPVDNERzYyLSUpUE9MWUdPTlNHNik3JjclJCIjSiEiIiQiI0ohIiIkIiIhISIiNyUkISNKISIiJCIjSiEiIiQiIiEhIiI3JSQhI0ohIiIkISNKISIiJCIiISEiIjclJCIjSiEiIiQhI0ohIiIkIiIhISIiNyU3JSQiI0ohIiIkIiNKISIiJCIiISEiIjclJCEjSiEiIiQiI0ohIiIkIiIhISIiNyUkIiIhISIiJCIiISEiIiQiJC8mISIiNyU3JSQhI0ohIiIkIiNKISIiJCIiISEiIjclJCEjSiEiIiQhI0ohIiIkIiIhISIiNyUkIiIhISIiJCIiISEiIiQiJC8mISIiNyU3JSQhI0ohIiIkISNKISIiJCIiISEiIjclJCIjSiEiIiQhI0ohIiIkIiIhISIiNyUkIiIhISIiJCIiISEiIiQiJC8mISIiNyU3JSQiI0ohIiIkISNKISIiJCIiISEiIjclJCIjSiEiIiQiI0ohIiIkIiIhISIiNyUkIiIhISIiJCIiISEiIiQiJC8mISIiLSUmQ09MT1JHNiYlJFJHQkckIihsPFQqISIoJCIoMyc+XSEiKCQiKDMnPl0hIigtJS1UUkFOU1BBUkVOQ1lHNiMkIigzJz5dISIoLSUnQ1VSVkVTRzYlNyQ3JSQiI1QhIiIkIiIhISIiJCIiISEiIjclJCIjVCEiIiQiIiEhIiIkIiNhISIiLSUmQ09MT1JHNiYlJFJHQkckIiIhISIiJCIiISEiIiQiIiEhIiItJSpUSElDS05FU1NHNiMiIzUtJSdDVVJWRVNHNiY3JDclJCIjVCEiIiQiIiEhIiIkIiNhISIiNyUkIiIhISIiJCIiISEiIiQiI2EhIiItJSZDT0xPUkc2JiUkUkdCRyQiIiEhIiIkIiIhISIiJCIiISEiIi0lKkxJTkVTVFlMRUc2IyIiJC0lKlRISUNLTkVTU0c2IyIjNS0lJ0NVUlZFU0c2JTckNyUkIiNKISIiJCIjVCEiIiQiIiEhIiI3JSQhI0ohIiIkIiNUISIiJCIiISEiIi0lJkNPTE9SRzYmJSRSR0JHJCIiISEiIiQiIiEhIiIkIiIhISIiLSUqVEhJQ0tORVNTRzYjIiM1LSUlVEVYVEc2JTclJCIjWiEiIiQiIiEhIiIkIiNJISIiLSUpX1RZUEVTRVRHNiMtSSVtcm93RzYjL0krbW9kdWxlbmFtZUc2IkksVHlwZXNldHRpbmdHSShfc3lzbGliRzYiNjUtSSNtc0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkc2IjYjUSQ1LjQ2Ii8lJ2ZhbWlseUdRJnRpbWVzNiIvJSVzaXplR1EjNDA2Ii8lJWJvbGRHUSZmYWxzZTYiLyUnaXRhbGljR1EmZmFsc2U2Ii8lKnVuZGVybGluZUdRJmZhbHNlNiIvJSpzdWJzY3JpcHRHUSZmYWxzZTYiLyUsc3VwZXJzY3JpcHRHUSZmYWxzZTYiLyUrZm9yZWdyb3VuZEdRKFswLDAsMF02Ii8lK2JhY2tncm91bmRHUS5bMjU1LDI1NSwyNTVdNiIvJSdvcGFxdWVHUSZmYWxzZTYiLyUrZXhlY3V0YWJsZUdRJmZhbHNlNiIvJSlyZWFkb25seUdRJmZhbHNlNiIvJSljb21wb3NlZEdRJmZhbHNlNiIvJSpjb252ZXJ0ZWRHUSZmYWxzZTYiLyUraW1zZWxlY3RlZEdRJmZhbHNlNiIvJSxwbGFjZWhvbGRlckdRJmZhbHNlNiIvJTZzZWxlY3Rpb24tcGxhY2Vob2xkZXJHUSZmYWxzZTYiLyUsbWF0aHZhcmlhbnRHUSdub3JtYWw2Ii0lJUZPTlRHNiUlJnRpbWVzRyUmcm9tYW5HIiNTLSUlVEVYVEc2JTclJCIiISEiIiQiI1QhIiIkISIkISIiLSUpX1RZUEVTRVRHNiMtSSVtcm93RzYjL0krbW9kdWxlbmFtZUc2IkksVHlwZXNldHRpbmdHSShfc3lzbGliRzYiNjUtSSNtc0c2Iy9JK21vZHVsZW5hbWVHNiJJLFR5cGVzZXR0aW5nR0koX3N5c2xpYkc2IjYjUSQzLjE2Ii8lJ2ZhbWlseUdRJnRpbWVzNiIvJSVzaXplR1EjNDA2Ii8lJWJvbGRHUSZmYWxzZTYiLyUnaXRhbGljR1EmZmFsc2U2Ii8lKnVuZGVybGluZUdRJmZhbHNlNiIvJSpzdWJzY3JpcHRHUSZmYWxzZTYiLyUsc3VwZXJzY3JpcHRHUSZmYWxzZTYiLyUrZm9yZWdyb3VuZEdRKFswLDAsMF02Ii8lK2JhY2tncm91bmRHUS5bMjU1LDI1NSwyNTVdNiIvJSdvcGFxdWVHUSZmYWxzZTYiLyUrZXhlY3V0YWJsZUdRJmZhbHNlNiIvJSlyZWFkb25seUdRJmZhbHNlNiIvJSljb21wb3NlZEdRJmZhbHNlNiIvJSpjb252ZXJ0ZWRHUSZmYWxzZTYiLyUraW1zZWxlY3RlZEdRJmZhbHNlNiIvJSxwbGFjZWhvbGRlckdRJmZhbHNlNiIvJTZzZWxlY3Rpb24tcGxhY2Vob2xkZXJHUSZmYWxzZTYiLyUsbWF0aHZhcmlhbnRHUSdub3JtYWw2Ii0lJUZPTlRHNiUlJnRpbWVzRyUmcm9tYW5HIiNTLSYlJl9BWElTRzYjIiIiNiYtJSZDT0xPUkc2JiUkUkdCRyQiIiEhIiIkIiIhISIiJCIiISEiIi0lKkxJTkVTVFlMRUc2IyIiIS0lKlRISUNLTkVTU0c2IyIiIS0lLVRSQU5TUEFSRU5DWUc2IyQiIiEhIiItJiUmX0FYSVNHNiMiIiM2Ji0lJkNPTE9SRzYmJSRSR0JHJCIiISEiIiQiIiEhIiIkIiIhISIiLSUqTElORVNUWUxFRzYjIiIhLSUqVEhJQ0tORVNTRzYjIiIhLSUtVFJBTlNQQVJFTkNZRzYjJCIiISEiIi0mJSZfQVhJU0c2IyIiJDYmLSUmQ09MT1JHNiYlJFJHQkckIiIhISIiJCIiISEiIiQiIiEhIiItJSpMSU5FU1RZTEVHNiMiIiEtJSpUSElDS05FU1NHNiMiIiEtJS1UUkFOU1BBUkVOQ1lHNiMkIiIhISIiLSUrTElHSFRNT0RFTEc2I1EoTElHSFRfMzYiLSUrUFJPSkVDVElPTkc2LCQiKT0iPUwlISM2JCEoaXMqKiohIigkIiknUl5IIyEiKiQiKXc2WUQhIikkIiktZUlBISIqJCIpMSV5bSohIikkISgnUXEnKiEiKCQiKFpeVSYhIiokIikpZWJhIyEiKSQiIzUhIiItJSpBWEVTU1RZTEVHNiMlJU5PTkVHLSUoU0NBTElOR0c2IyUsQ09OU1RSQUlORURHLSUpX1ZJU0lCTEVHNiMiIiItJSVST09URzYnLSUpQk9VTkRTX1hHNiMkIiIhISIiLSUpQk9VTkRTX1lHNiMkIiIhISIiLSUtQk9VTkRTX1dJRFRIRzYjJCIlK3EhIiItJS5CT1VORFNfSEVJR0hURzYjJCIlK3EhIiItJSlDSElMRFJFTkc2Ii0lK0FOTk9UQVRJT05HNictJSlCT1VORFNfWEc2IyQiIiEhIiItJSlCT1VORFNfWUc2IyQiIiEhIiItJS1CT1VORFNfV0lEVEhHNiMkIiUrcSEiIi0lLkJPVU5EU19IRUlHSFRHNiMkIiUrcSEiIi0lKUNISUxEUkVORzYiRzYi</Plot></Text-field>
+</Output>
+</Group>
+<Group labelreference="L5" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal"></Text-field>
+</Input>
+</Group>
 </Worksheet>
